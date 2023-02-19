@@ -1,0 +1,10 @@
+version: "1.0"
+services:
+  postgres:
+    container_name: localPostgresql
+    image: postgres
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "pgAdmin"
+      ports: "5432:5432"
