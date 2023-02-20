@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/")
-@AllArgsConstructor
 public class FileController {
 
     @Autowired

@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class PersonDetailsService implements UserDetailsService {
-    private final PersonRepository personRepository;
+    private PersonRepository personRepository;
 
     @Autowired
     public PersonDetailsService(PersonRepository personRepository) {

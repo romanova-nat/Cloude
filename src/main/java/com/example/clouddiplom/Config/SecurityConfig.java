@@ -27,13 +27,20 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true, jsr250Enabled = true)
 public class SecurityConfig implements WebSecurityConfigurer {
 
     private final PersonDetailsService personDetailsService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtRequestFilter jwtRequestFilter;
+
+    @Autowired
+    public SecurityConfig(PersonDetailsService personDetailsService,
+                          JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtRequestFilter jwtRequestFilter) {
+        this.personDetailsService = personDetailsService;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
 
     @Value("${cors.credentials}")
     private Boolean credentials;

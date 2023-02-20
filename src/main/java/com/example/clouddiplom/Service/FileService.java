@@ -9,8 +9,8 @@ import com.example.clouddiplom.Repository.AuthenticationRepository;
 import com.example.clouddiplom.Repository.FileRepository;
 import com.example.clouddiplom.Repository.PersonRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,11 +21,19 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-@AllArgsConstructor
 public class FileService {
+    @Autowired
     private FileRepository fileRepository;
     private PersonRepository personRepository;
     private AuthenticationRepository authenticationRepository;
+
+    @Autowired
+    public FileService(FileRepository fileRepository, PersonRepository personRepository,
+                       AuthenticationRepository authenticationRepository) {
+        this.fileRepository = fileRepository;
+        this.personRepository = personRepository;
+        this.authenticationRepository = authenticationRepository;
+    }
 
     // Добавить файл
     public String uploadFile(String authToken, String filename, MultipartFile multipartFile) {
