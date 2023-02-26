@@ -1,24 +1,17 @@
 package com.example.clouddiplom.Model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Table;
-import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(appliesTo = "Person")
+@Table(name = "person")
 public class Person {
-        @jakarta.persistence.Id
         @Id
         @Column (name = "id")
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +22,12 @@ public class Person {
         private String password;
         @OneToMany(cascade = CascadeType.ALL) // // удалятся все файлы при удалении пользователя
         private List<File> files = new ArrayList<>();
+
+        public Person(String login, String password, List<File> files) {
+                this.login = login;
+                this.password = password;
+                this.files = files;
+        }
 
         // добавляем пользователю файл в список
         public void addFileToPerson (File file) {

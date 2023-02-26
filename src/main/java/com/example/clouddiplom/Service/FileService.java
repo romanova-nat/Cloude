@@ -18,11 +18,10 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-
 @Service
 @Slf4j
 public class FileService {
-    @Autowired
+
     private FileRepository fileRepository;
     private PersonRepository personRepository;
     private AuthenticationRepository authenticationRepository;
@@ -39,11 +38,11 @@ public class FileService {
     public String uploadFile(String authToken, String filename, MultipartFile multipartFile) {
         Optional<Person> person = getUserByAuthToken(authToken);
         if (person == null) {
-            throw new UnauthorizedException(Constant.USR_NOT_FOUND); // Пользователь не найден
+            throw new UnauthorizedException(Constant.USR_NOT_UNAUTHORIZED); //Пользоватль не авторизован
         }
         try {
-            fileRepository.save(new File(filename, LocalDateTime.now(), multipartFile.getSize(),
-                            multipartFile.getBytes(), person));
+            fileRepository.save(new File(filename, multipartFile.getSize(), LocalDateTime.now(),
+                                        multipartFile.getBytes(), person));
             return Constant.SUCCESS_UPLOAD;  // Файл загружен
         } catch (IOException e) {
             throw new InputDataException(Constant.ERR_UPLOAD); // Ошибка загрузки файла
@@ -54,7 +53,7 @@ public class FileService {
         if (authToken.startsWith("Bearer ")) {
             final String authTokenWithoutBearer = authToken.split(" ")[1];
             final String username = authenticationRepository.getUsernameByToken(authTokenWithoutBearer);
-            return personRepository.findByUsername(username);
+            return Optional.ofNullable(personRepository.findByUsername(username));
         }
         return null;
     }
@@ -64,12 +63,12 @@ public class FileService {
     public void deleteFile(String authToken, String filename) {
         Optional<Person> person = getUserByAuthToken(authToken);
         if (person == null) {
-            throw new UnauthorizedException(Constant.USR_NOT_FOUND); // Пользователь не найден
+            throw new UnauthorizedException(Constant.USR_NOT_UNAUTHORIZED); //Пользоватль не авторизован
         }
-        fileRepository.deleteByUserAndFilename(filename);
+        fileRepository.deleteByUserAndFilename(person, filename);
         System.out.println(Constant.SUCCESS_DEL); // Файл удален
 
-        final File tryingToGetDeletedFile = fileRepository.findByUserAndFilename(filename);
+        final File tryingToGetDeletedFile = fileRepository.findByUserAndFilename(person, filename);
         if (tryingToGetDeletedFile != null) {
             try {
                 throw new InputDataException(Constant.ERR_DELETE); // Ошибка удаления файла
@@ -78,7 +77,6 @@ public class FileService {
             }
         }
     }
-
 
 
 //    public List<FileRS> getAllFiles(String authToken, Integer limit) {

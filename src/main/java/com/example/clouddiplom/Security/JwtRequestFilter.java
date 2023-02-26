@@ -1,6 +1,5 @@
 package com.example.clouddiplom.Security;
 
-import com.example.clouddiplom.Security.JwtTokenUtil;
 import com.example.clouddiplom.Service.PersonDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,7 +25,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtTokenUtil jwtTokenUtil;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader("auth-token");
         String username = null;
         String jwtToken = null;
@@ -47,10 +47,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                         null,
                         userDetails.getAuthorities()
                 );
-                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                usernamePasswordAuthenticationToken.setDetails
+                        (new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }
+
         filterChain.doFilter(request, response);
     }
 }

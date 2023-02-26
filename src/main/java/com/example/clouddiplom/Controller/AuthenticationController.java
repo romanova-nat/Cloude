@@ -12,14 +12,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@AllArgsConstructor
 public class AuthenticationController {
 
     private AuthenticationService authenticationService;
 
-    @Autowired
-    public AuthenticationController(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
-    }
 
     @PostMapping("/login")
     public PersonDTO login(@RequestBody FileDTO fileDTO) {

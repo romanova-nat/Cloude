@@ -28,14 +28,12 @@ public class AuthenticationService {
         final UserDetails userDetails = personDetailsService.loadUserByUsername(username);
         final String token = jwtTokenUtil.generateToken(userDetails);
         authenticationRepository.putTokenAndUsername(token, username);
-        log.info("User {} authentication. JWT: {}", username, token);
         return new PersonDTO(token);
     }
 
     public void logout(String authToken) {
         final String token = authToken.substring(7);
         final String username = authenticationRepository.getUsernameByToken(token);
-        log.info("User {} logout. JWT is disabled.", username);
         authenticationRepository.removeTokenAndUsernameByToken(token);
     }
 }

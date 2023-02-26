@@ -3,7 +3,6 @@ package com.example.clouddiplom.Config;
 import com.example.clouddiplom.Security.JwtAuthenticationEntryPoint;
 import com.example.clouddiplom.Security.JwtRequestFilter;
 import com.example.clouddiplom.Service.PersonDetailsService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -28,13 +28,12 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true, jsr250Enabled = true)
-public class SecurityConfig implements WebSecurityConfigurer {
+public class SecurityConfig {
 
     private final PersonDetailsService personDetailsService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtRequestFilter jwtRequestFilter;
 
-    @Autowired
     public SecurityConfig(PersonDetailsService personDetailsService,
                           JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtRequestFilter jwtRequestFilter) {
         this.personDetailsService = personDetailsService;
@@ -53,6 +52,7 @@ public class SecurityConfig implements WebSecurityConfigurer {
 
     @Value("${cors.headers}")
     private String headers;
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -76,58 +76,35 @@ public class SecurityConfig implements WebSecurityConfigurer {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public AuthenticationManager authenticationManagern() throws Exception {
-//        return super.authenticationManager();
-//    }
-
-
-    //   protected void configure(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-//        httpSecurity.cors();
-//        httpSecurity.authorizeRequests().requestMatchers("/h2-console/**").permitAll();
-//        httpSecurity.csrf().disable();
-//        httpSecurity.headers().frameOptions().disable();
-//
-//        httpSecurity
-//                .authorizeRequests()
-//                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-//                .and()
-//                .authorizeRequests().requestMatchers("/login").permitAll();
-//
-//        httpSecurity
-//                .exceptionHandling()
-//                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//                .and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//    }
-
-    @Override
-    public void init(SecurityBuilder builder) throws Exception {
-    }
-
-    @Override
-    public void configure(SecurityBuilder builder) throws Exception {
-        HttpSecurity httpSecurity = null;
-        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-        httpSecurity.cors();
-        httpSecurity.authorizeRequests().requestMatchers("/h2-console/**").permitAll();
-        httpSecurity.csrf().disable();
-        httpSecurity.headers().frameOptions().disable();
-
-        httpSecurity
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.cors().and().csrf().disable()
+                .authorizeHttpRequests()
+                .requestMatchers("/h2-console/**").permitAll();
+        http.headers().frameOptions().disable();
+        http
                 .authorizeRequests()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .and()
                 .authorizeRequests().requestMatchers("/login").permitAll();
 
-        httpSecurity
+        http
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+//                .anyRequest().authenticated()
+//                .and()
+//                .formLogin().permitAll()
+//                .defaultSuccessUrl("/show")
+//                .and()
+//                .logout()
+//                .logoutUrl("/logout")
+//                .logoutSuccessUrl("/login");
+        return http.build();
     }
 }
 

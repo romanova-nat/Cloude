@@ -2,7 +2,6 @@ package com.example.clouddiplom.Controller;
 
 import com.example.clouddiplom.Constant.Constant;
 import com.example.clouddiplom.Service.FileService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,23 +9,25 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/")
 public class FileController {
-
-    @Autowired
     private FileService fileService;
+    @Autowired
+    public FileController(FileService fileService) {
+        this.fileService = fileService;
+    }
 
-//    //Добавить
+    //    //Добавить
     @PostMapping("/file")
     public String uploadFile(@RequestHeader("auth-token") String authToken,
-                                        @RequestParam("filename") String filename, MultipartFile file) {
-        fileService.uploadFile(authToken, filename, file);
+                                        @RequestParam("fileName") String fileName, MultipartFile file) {
+        fileService.uploadFile(authToken, fileName, file);
         return Constant.SUCCESS_UPLOAD;  // Файл загружен
     }
 
     //Удалить
     @DeleteMapping("/file")
     public String deleteFile(@RequestHeader("auth-token") String authToken,
-                             @RequestParam("filename") String filename) {
-        fileService.deleteFile(authToken, filename);
+                             @RequestParam("fileName") String fileName) {
+        fileService.deleteFile(authToken, fileName);
         return Constant.SUCCESS_DEL; // Файл удален
     }
 
