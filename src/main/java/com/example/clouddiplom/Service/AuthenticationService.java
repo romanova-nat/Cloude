@@ -26,7 +26,7 @@ public class AuthenticationService {
         final String password = fileDTO.getPassword();
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         final UserDetails userDetails = personDetailsService.loadUserByUsername(username);
-        final String token = jwtTokenUtil.generateToken(userDetails);
+        final String token = jwtTokenUtil.generateToken(String.valueOf(userDetails));
         authenticationRepository.putTokenAndUsername(token, username);
         return new PersonDTO(token);
     }

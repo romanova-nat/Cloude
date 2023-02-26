@@ -7,16 +7,21 @@ import com.example.clouddiplom.Repository.PersonRepository;
 import com.example.clouddiplom.Security.PersonDetails;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
 @Slf4j
 public class PersonDetailsService implements UserDetailsService {
     private PersonRepository personRepository;
+
+    @Autowired
+    public PersonDetailsService(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
