@@ -10,10 +10,9 @@ import java.util.Optional;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "file")
+@Table(name = "files")
 public class File {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
