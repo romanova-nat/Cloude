@@ -35,7 +35,7 @@ JPA ТЕСТЫ (src/test/java/ru/netology/repository) (StorageFileRepositoryTest
 После сборки docker-контейнера необходимо раскомментировать и запустить тесты.
 
 ### Запуск FRONT:
-1. Установить nodejs (версия не ниже 19.7.0) на компьютер, следуя инструкции (https://nodejs.org/ru/download/current).
+1. Установить nodejs (версия не ниже 19.7.0) на компьютер, [следуя инструкции] (https://nodejs.org/ru/download/current).
 2. Скачать FRONT (https://github.com/netology-code/jd-homeworks/tree/master/diploma/netology-diplom-frontend) 
 (JavaScript);
 3. Перейти в папку FRONT приложения и все команды для запуска выполнять из нее;
