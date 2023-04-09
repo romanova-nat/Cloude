@@ -41,11 +41,11 @@ JPA ТЕСТЫ (src/test/java/ru/netology/repository) (StorageFileRepositoryTest
 3. Перейти в папку FRONT приложения и все команды для запуска выполнять из нее;
 4. Следуя описанию README.md FRONT проекта запустить nodejs приложение (npm install, npm run serve);
 5. В файле .env FRONT (находится в корне проекта) приложения нужно изменить url до backend,
-например: VUE_APP_BASE_URL=http://localhost:8080.
+например: `VUE_APP_BASE_URL=http://localhost:8080`.
 6. Нужно указать корневой url вашего backend, к нему frontend будет добавлять все пути согласно
    спецификации.
-   Для VUE_APP_BASE_URL=http://localhost:8080 при выполнении логина frontend вызовет
-   http://localhost:8080/login
+   Для `VUE_APP_BASE_URL=http://localhost:8080` при выполнении логина frontend вызовет
+   `http://localhost:8080/login`
 7. Для запуска FRONT приложения с расширенным логированием использовать команду: `npm run serve`.
 8. Изменённый url сохранится для следующих запусков.
 
@@ -63,7 +63,7 @@ BACKEND можно запустить и через main метод в клас�
 ## Работа приложения
 
 ### 1. Аутентификация
-http://localhost:5050/login
+`http://localhost:5050/login`
 `POST`
 `Content-Type: application/json`
 
@@ -79,7 +79,7 @@ http://localhost:5050/login
 - неуспешный ответ с кодом "500"(ошибка приложения)
 
 ### 2. Загрузка файла
-http://localhost:5050/file?filename=example.jpg
+`http://localhost:5050/file?filename=example.jpg`
 `POST`
 `Content-Type: multipart/form-data`
 
@@ -88,7 +88,7 @@ http://localhost:5050/file?filename=example.jpg
 - неуспешный ответ с кодом "500"(ошибка приложения)
 
 ### 3. Удаление файла
-http://localhost:5050/file?filename=example.jpg
+`http://localhost:5050/file?filename=example.jpg`
 `DELETE`
 
 #### *Результаты обработки:*
@@ -97,7 +97,7 @@ http://localhost:5050/file?filename=example.jpg
 - неуспешный ответ с кодом "500"(ошибка приложения)
 
 ### 4. Изменение имени файла
-http://localhost:5050/file?filename=example.jpg
+`http://localhost:5050/file?filename=example.jpg`
 `PUT`
 `Content-Type: application/json`
 
@@ -110,7 +110,7 @@ http://localhost:5050/file?filename=example.jpg
 - неуспешный ответ с кодом "500"(ошибка приложения)
 
 ### 5. Скачать файл
-http://localhost:5050/file?filename=example.jpg
+`http://localhost:5050/file?filename=example.jpg`
 `GET`
 
 #### *Результаты обработки:*
